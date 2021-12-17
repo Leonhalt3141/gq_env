@@ -1,5 +1,8 @@
 #!/bin/bash
 
+BASE_IMAGE=ubuntu
+IMAGE_TAG=20.04
+
 set -e
 
 SPARK_VERSION=3.1.1
@@ -11,7 +14,7 @@ build() {
     IMAGE=gq-env/spark-$NAME:$TAG
     cd $([ -z "$2" ] && echo "./$NAME" || echo "$2")
     echo '--------------------------' building $IMAGE in $(pwd)
-    docker build -t $IMAGE .
+    docker build --build-arg IMAGE=${BASE_IMAGE} --build-arg TAG=${IMAGE_TAG} -t $IMAGE .
     cd -
 }
 

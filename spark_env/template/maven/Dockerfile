@@ -1,16 +1,15 @@
-FROM bde2020/spark-submit:3.1.1-hadoop3.2
-
-LABEL maintainer="Gezim Sejdiu <g.sejdiu@gmail.com>, Giannis Mouchakis <gmouchakis@gmail.com>"
+FROM gq-env/spark-submit:3.1.1-hadoop3.2
 
 ENV SPARK_APPLICATION_JAR_NAME application-1.0
 ENV SPARK_APPLICATION_JAR_LOCATION /app/application.jar
 
 COPY template.sh /
 
-RUN apk add --no-cache openjdk8 maven\
-      && chmod +x /template.sh \
-      && mkdir -p /app \
-      && mkdir -p /usr/src/app
+RUN apt-get update \
+    && apt-get install -y openjdk-8-jdk maven \
+    && chmod +x /template.sh \
+    && mkdir -p /app \
+    && mkdir -p /usr/src/app
 
 # Copy the POM-file first, for separate dependency resolving and downloading
 ONBUILD COPY pom.xml /usr/src/app
